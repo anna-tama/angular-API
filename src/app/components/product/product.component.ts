@@ -15,14 +15,13 @@ export class ProductComponent {
     images: [],
     title: '',
     category: {
-      id: ''
-      ,name: ''
+      id: '',
+      name: '',
     },
     description: ''
   };
   @Output() addedProduct = new EventEmitter<Product>();
   @Output() showProduct = new EventEmitter<string>(); //hijo envía al padre
-
 
   constructor() { }
 
@@ -30,8 +29,9 @@ export class ProductComponent {
     this.addedProduct.emit(this.product);
   }
 
-  onShowDetail(){
+  onShowDetail() {
     this.showProduct.emit(this.product.id);
   }
+
 
 }
