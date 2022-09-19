@@ -10,7 +10,7 @@ import { Product,CreateProductDTO,UpdateProductDTO } from './../models/product.m
 })
 export class ProductsService {
 
-  private apiUrl='https://young-sands-07814.herokuapppppp.com/api/products';
+  private apiUrl='/api/products'; //en el proxy está la url
 
   constructor(
     private http: HttpClient
