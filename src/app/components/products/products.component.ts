@@ -29,6 +29,7 @@ export class ProductsComponent implements OnInit {
   }
   limit = 10;
   offset = 0;
+  statusDetail: 'loading'| 'sucess' | 'error' | 'init' = 'init';
 
   constructor(
     private storeService: StoreService,
@@ -55,10 +56,17 @@ export class ProductsComponent implements OnInit {
   }
 
   onShowDetail(id: string){
+    this.statusDetail = 'loading';
+    this.toggleProductDetail();
     this.productsService.getProduct(id)
     .subscribe(data=>{
-      this.toggleProductDetail();
       this.productChosen = data;
+      this.statusDetail = 'sucess';
+    }, errorMsg => {
+      window.alert(errorMsg);
+      //console.log(response) //devuelve las que puse en el service con HttpStatusCode
+      // console.error(response.error.message); //devuelve el error del backend
+      this.statusDetail = 'error';
     })
   }
 
