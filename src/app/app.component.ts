@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { UsersService } from 'src/app/services/users.service';
+import { FilesService } from './services/files.service';
 
 
 @Component({
@@ -14,6 +15,7 @@ export class AppComponent {
 
   constructor(
     private usersService: UsersService
+    ,private filesService: FilesService
   ) {}
 
 
@@ -34,6 +36,11 @@ export class AppComponent {
       .subscribe(rta => {
         console.log(rta);
       })
+  }
+
+  downloadPDF(){              //nombre de como lo quiero descargar, url del pdf                      ,tipo de contenido
+    this.filesService.getFile('my.pdf','https://young-sands-07814.herokuapp.com/api/files/dummy.pdf', 'application/pdf')
+    .subscribe()
   }
 
 
