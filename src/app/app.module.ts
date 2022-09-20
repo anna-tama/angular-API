@@ -14,6 +14,7 @@ import { ReversePipe } from './pipes/reverse.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { HighlightDirective } from './directives/highlight.directive';
 import { TimeInterceptor } from './interceptors/time.interceptor';//interceptor
+import { TokenInterceptor } from './interceptors/token.interceptor';//interceptor
 
 
 @NgModule({
@@ -36,6 +37,8 @@ import { TimeInterceptor } from './interceptors/time.interceptor';//interceptor
   ],
   providers: [
    {provide: HTTP_INTERCEPTORS, useClass: TimeInterceptor, multi: true} //interceptor
+   ,{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true} //interceptor
+
   ],
   bootstrap: [AppComponent]
 })
