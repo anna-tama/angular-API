@@ -40,6 +40,7 @@ export class NavComponent implements OnInit {
     this.authService.login('mauro@mail.com', '1234')
       .subscribe(rta => {
         this.token = rta.access_token;
+        this.getProfile();
       })
   }
 
