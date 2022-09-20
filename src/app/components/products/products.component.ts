@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { zip } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { CreateProductDTO, Product, UpdateProductDTO } from '../../models/product.model';
 
@@ -67,6 +69,30 @@ export class ProductsComponent implements OnInit {
       //console.log(response) //devuelve las que puse en el service con HttpStatusCode
       // console.error(response.error.message); //devuelve el error del backend
       this.statusDetail = 'error';
+    })
+  }
+
+  readAndUpdate(id: string){
+    this.productsService.getProduct(id)
+    .pipe(
+      //switchmap corre primero una y luego otra a diferencia de zip que lo hace en paralelo
+      switchMap( (product) => this.productsService.update(product.id, {title:'change'} )),
+      // switchMap( (product) => this.productsService.update(product.id, {title:'change'} )), sería lo mismo que las promises .then
+      // switchMap( (product) => this.productsService.update(product.id, {title:'change'} )),
+    )
+    .subscribe(data => {
+      console.log(data);
+      //todo esto es un callback hell
+      // const product = data;
+      // this.productsService.update(product.id, {title:'change'})
+      // .subscribe(rtaUpdate => {
+      //   console.log(rtaUpdate)
+      // })
+    });
+  this.productsService.fetchReadAndUpdate(id,{title:'change'} )
+    .subscribe(response => {
+      const read = response[0]; //getProduct
+      const update = response[1] //update
     })
   }
 
