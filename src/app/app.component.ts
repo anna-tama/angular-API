@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-
-import { AuthService } from './services/auth.service';
-import { UsersService } from './services/users.service';
+import { UsersService } from 'src/app/services/users.service';
 
 
 @Component({
@@ -12,14 +10,15 @@ import { UsersService } from './services/users.service';
 export class AppComponent {
   imgParent = '';
   showImg = true;
+  token= '';
 
   constructor(
-    private authService: AuthService, private usersService: UsersService
+    private usersService: UsersService
   ) {}
 
 
   onLoaded(img: string) {
-    console.log('log padre', img);
+    // console.log('log padre', img);
   }
 
   toggleImg() {
@@ -37,10 +36,5 @@ export class AppComponent {
       })
   }
 
-  login() {
-    this.authService.login('mauro@mail.com', '1234')
-      .subscribe(rta => {
-        console.log(rta.access_token);
-      })
-  }
+
 }
