@@ -2,12 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
 import { tap, map } from 'rxjs/operators';
+import {environment} from './../../environments/environment'
+
+interface File {
+  originalname: string;
+  filename: string;
+  location: string;
+}
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilesService {
+
+  private apiUrl=`${environment.API_URL}/api/files`; //en el proxy está la url
 
   constructor(
    private  http: HttpClient
@@ -22,5 +31,15 @@ export class FilesService {
       }),
       map(() => true) //me devuelva un true or flase, no necesito contenido
     )
+  }
+
+  uploadFile(file: Blob){
+    const dto =  new FormData();
+    dto.append('file', file);
+    return this.http.post<File>(`${this.apiUrl}/upload`,dto, {
+      // headers: {  //si necesita el backend puede ser opcional
+      //   'Content-type':"multipart/form-data"
+      // }
+    })
   }
 }

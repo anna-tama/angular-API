@@ -12,6 +12,7 @@ export class AppComponent {
   imgParent = '';
   showImg = true;
   token= '';
+  imgRta= '';
 
   constructor(
     private usersService: UsersService
@@ -43,5 +44,16 @@ export class AppComponent {
     .subscribe()
   }
 
+  onLoad(event: Event): void {
+    const element = event.target as HTMLInputElement;
+    const file = element.files?.item(0);
+    if (file) {
+      this.filesService.uploadFile(file)
+        .subscribe(rta => {
+          console.log('upload', rta)
+          this.imgRta = rta.location;
+        });
+    }
+}
 
 }
