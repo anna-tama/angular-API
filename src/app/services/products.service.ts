@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpParams, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { retry,catchError, map } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, zip } from 'rxjs';
 
 
 import { Product,CreateProductDTO,UpdateProductDTO } from './../models/product.model';
@@ -27,13 +27,14 @@ export class ProductsService {
     return this.http.get<Product[]>(this.apiUrl, { params })
     .pipe(
       retry(3),
-      map(products => products.map(item => {
-        return {
-          ...item,
-          taxes: .19 * item.price
-        }
-      }))
     );
+  }
+
+  fetchReadAndUpdate(id: string, dto: UpdateProductDTO){
+   return zip( //es lo mismo que Promise.all, envia dos observadores comprimidos y recibir la respuesta al mismo tiempo
+    this.getProduct(id),
+    this.update(id, dto)
+  )
   }
 
   getProduct(id: string){
@@ -57,7 +58,15 @@ export class ProductsService {
   getProductsByPage(limit: number, offset: number){
     return this.http.get<Product[]>(`${this.apiUrl}`, {
       params: {limit, offset}
-    });
+    })
+    .pipe(
+      map(products => products.map(item => {
+        return {
+          ...item,
+          taxes: .19 * item.price
+        }
+      }))
+    )
   }
 
   create(dto: CreateProductDTO){
