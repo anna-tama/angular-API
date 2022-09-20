@@ -62,7 +62,7 @@ export class ProductsService {
       , context: checkTime() //petición evaluada por time interceptor le agrego el contexto checkTime()
     })
     .pipe(
-      map(products => products.map(item => {
+      map(products => products.map(item => { //map aplica una transformación por cada valor emitido en el Observable
         return {
           ...item,
           taxes: .19 * item.price
